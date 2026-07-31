@@ -1,11 +1,19 @@
 package com.example.lostandfound.dto;
 
+import com.example.lostandfound.entity.User;
+
 public class AuthResponse {
     private String token;
     private String type = "Bearer";
+    private User user;
 
     public AuthResponse(String token) {
         this.token = token;
+    }
+
+    public AuthResponse(String token, User user) {
+        this.token = token;
+        this.user = user;
     }
 
     public String getToken() {
@@ -22,5 +30,13 @@ public class AuthResponse {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
