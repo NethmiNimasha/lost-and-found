@@ -3,6 +3,7 @@ package com.example.lostandfound.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -34,13 +35,24 @@ public class SecurityConfig {
     private UserDetailsServiceImpl userDetailsService;
 
     @Bean
+    @Order(1)
+    public SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .securityMatcher("/h2-console/**", "/h2-console")
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .build();
+    }
+
+    @Bean
+    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/api/auth/**", "/h2-console/**", "/h2-console", "/error").permitAll()
+                        .requestMatchers("/", "/api/auth/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -16,7 +16,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/signup")
+    @PostMapping({"/signup", "/register"})
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         try {
             String message = authService.registerUser(signUpRequest);
@@ -26,7 +26,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/signin")
+    @PostMapping({"/signin", "/login"})
     public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
         AuthResponse response = authService.authenticateUser(signInRequest);
         return ResponseEntity.ok(response);
