@@ -50,5 +50,3 @@ The application is configured to connect to an H2 database or MySQL depending on
 
 The API is secured using JWT. To access protected endpoints, you must obtain a JWT token by logging in or registering, and then include the token in the `Authorization` header of subsequent requests:
 
-```
-
